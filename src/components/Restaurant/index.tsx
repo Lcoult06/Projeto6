@@ -1,5 +1,4 @@
 import Avaliacao from '../Avaliacao'
-import Button from '../Button'
 import { ButtonLink } from '../Button/styles'
 import Tag from '../Tag'
 import { Card, TitleCard, Descricao, CardSection, Infos, Rate } from './styles'
@@ -15,7 +14,7 @@ type Props = {
 
 const Restaurant = ({
   titulo,
-  destacado,
+  // destacado,
   tipo,
   avaliacao,
   descricao,

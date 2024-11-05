@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import { cores } from '../../styles'
 import { TagContainer } from '../Tag/styles'
-import Avaliacao from '../Avaliacao'
-import Button from '../Button'
 import { ButtonLink } from '../Button/styles'
 
 export const Card = styled.div`

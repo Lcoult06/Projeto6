@@ -9,8 +9,9 @@ export const Card = styled.div`
   border-right: 1px solid ${cores.vermelho};
   border-bottom: 1px solid ${cores.vermelho};
   border-left: 1px solid ${cores.vermelho};
-  padding-bottom: 8px;
   position: relative;
+  width: 100%;
+  height: 398px;
 
   > img {
     display: block;
@@ -20,7 +21,10 @@ export const Card = styled.div`
   ${TagContainer} {
     margin-right: 8px;
   }
+
   ${ButtonLink} {
+    position: absolute;
+    margin-top: 16px;
     margin-bottom: 8px;
   }
 `
@@ -32,15 +36,16 @@ export const CardSection = styled.div`
 export const TitleCard = styled.h3`
   font-size: 18px;
   font-weight: 700;
-  display: block;
   padding-top: 8px;
 `
 export const Descricao = styled.p`
+  width: 100%;
+  height: 88px;
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
   display: block;
-  padding: 16px 8px 16px 0;
+  margin-top: 16px;
 `
 
 export const Infos = styled.div`

@@ -6,9 +6,7 @@ import { HeaderBar, Title } from './styles'
 const HeaderHome = () => (
   <HeaderBar style={{ backgroundImage: `url(${HeaderImg})` }}>
     <div className="container">
-      <Link to="/restaurantes">
-        <img src={logo} alt="EPLAY" />
-      </Link>
+      <img src={logo} alt="EPLAY" />
       <Title>Viva experiências gastronômicas no conforto da sua casa</Title>
     </div>
   </HeaderBar>

@@ -1,28 +1,24 @@
-import { useEffect, useState } from 'react'
 import Avaliacao from '../Avaliacao'
 import { ButtonLink } from '../Button/styles'
 import Tag from '../Tag'
 import { Card, TitleCard, Descricao, CardSection, Infos, Rate } from './styles'
-import { Restaurante } from '../../pages/Home'
 
 type Props = {
   id: number
   titulo: string
-  destacado?: boolean
-  tipo: string
   avaliacao: number
   descricao: string
   capa: string
+  infos: string[]
 }
 
 const Restaurant = ({
   id,
   titulo,
-  destacado,
-  tipo,
   avaliacao,
   descricao,
-  capa
+  capa,
+  infos
 }: Props) => {
   const getDescricao = (descricao: string) => {
     if (descricao.length > 234) {
@@ -34,7 +30,9 @@ const Restaurant = ({
     <Card>
       <img src={capa} alt={titulo} />
       <Infos>
-        <Tag>{tipo}</Tag>
+        {infos.map((info) => (
+          <Tag key={info}>{info}</Tag>
+        ))}
       </Infos>
       <CardSection>
         <TitleCard>{titulo}</TitleCard>

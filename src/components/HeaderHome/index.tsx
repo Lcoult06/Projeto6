@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import HeaderImg from '../../assets/images/fundo.png'
 import logo from '../../assets/images/logo.png'
 import { HeaderBar, Title } from './styles'

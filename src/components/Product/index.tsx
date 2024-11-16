@@ -75,7 +75,7 @@ const Product = ({ restaurante }: Props) => {
             })
           }
         >
-          Adicionar ao carrinho
+          Mais detalhes
         </ButtonContainer>
       </Card>
       <Modal className={modal.isVisible ? 'visivel' : ''}>

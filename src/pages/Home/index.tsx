@@ -29,6 +29,11 @@ const Home = () => {
       .then((res) => res.json())
       .then((res) => setRestaurante(res))
   }, [])
+
+  if (!restaurantes) {
+    return <h3>Carregando...</h3>
+  }
+
   return (
     <>
       <HeaderHome />

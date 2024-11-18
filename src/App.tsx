@@ -5,13 +5,7 @@ import { GlobalCss } from './styles'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import Perfil from './pages/Perfil'
-
-const Rotas = () => (
-  <Routes>
-    <Route path="/restaurantes" element={<Perfil />} />
-    <Route path="/" element={<Home />} />
-  </Routes>
-)
+import Rotas from './routes'
 
 function App() {
   return (

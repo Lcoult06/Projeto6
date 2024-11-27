@@ -16,8 +16,8 @@ const Perfil = () => {
       .then((res) => res.json())
       .then((res) => {
         setCardapio(res)
-        const { cardapio } = res
-        setMenu(cardapio)
+        // const { cardapio } = res
+        setMenu(res.cardapio)
       })
   }, [id])
 
@@ -37,23 +37,5 @@ const Perfil = () => {
     </>
   )
 }
-
-// const Perfil = () => {
-//   const [item, setCardapio] = useState<Restaurantes[]>([])
-
-//   useEffect(() => {
-//     fetch('https://fake-api-tau.vercel.app/api/efood/restaurantes')
-//       .then((res) => res.json())
-//       .then((res) => setCardapio(res))
-//   }, [])
-
-//   return (
-//     <>
-//       <Header />
-//       <Banner />
-//       <ProductsList cardapio={item} />
-//     </>
-//   )
-// }
 
 export default Perfil

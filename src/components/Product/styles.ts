@@ -69,7 +69,8 @@ export const ModalContent = styled.div`
   position: relative;
   z-index: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding: 32px;
   header {
     img {
       position: absolute;
@@ -80,26 +81,25 @@ export const ModalContent = styled.div`
   > img {
     width: 280px;
     height: 280px;
-    margin: 32px 24px 32px 32px;
+    margin-right: 32px;
     object-fit: cover;
   }
 `
 export const Description = styled.div`
-  margin-right: 32px;
   h4 {
     font-size: 18px;
     font-weight: 900;
     color: ${cores.branca};
-    margin-bottom: 8px;
   }
   p {
     font-size: 14px;
     font-weight: 400;
     color: ${cores.branca};
     line-height: 22px;
+    margin-top: 16px;
+    margin-bottom: 27px;
   }
   ${ButtonContainer} {
     padding: 4px 7px;
-    margin-top: 16px;
   }
 `

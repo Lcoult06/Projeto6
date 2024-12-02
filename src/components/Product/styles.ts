@@ -37,7 +37,16 @@ export const Descricao = styled.p`
   // padding-bottom: 8px;
 `
 
-export const Modal = styled.div`
+export const ProductList = styled.li`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 32px;
+  row-gap: 32px;
+  margin-top: 56px;
+  margin-bottom: 120px;
+`
+
+export const ModalContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -58,7 +67,8 @@ export const Modal = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #000;
+    opacity: 0.3;
   }
 `
 export const ModalContent = styled.div`

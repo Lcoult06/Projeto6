@@ -1,30 +1,37 @@
-import { CardapioItem } from '../../pages/Home'
+import { useEffect, useState } from 'react'
+import ProdutoImg from '../../assets/images/pizza.png'
+import banner from '../../assets/images/banner.png'
 import { ButtonContainer } from '../Button/styles'
 import {
   Card,
   TitleCard,
   Descricao,
-  Modal,
+  ProductList,
   ModalContent,
-  Description
+  Description,
+  ModalContainer
 } from './styles'
 import fechar from '../../assets/images/fechar.png'
+import { CardapioItem, Restaurante } from '../../pages/Home'
 
-import { useState } from 'react'
+const mock: CardapioItem[] = [
+  {
+    foto: ProdutoImg,
+    id: 1,
+    nome: 'Ravioli al Tartufo Nero',
+    descricao:
+      'O Ravioli al Tartufo Nero é um requintado prato de massa artesanal, que celebra os sabores ricos e terrosos da trufa negra italiana. Cada ravióli é cuidadosamente recheado com uma mistura saborosa de ricota fresca, parmesão e trufas negras raladas, proporcionando uma combinação de texturas suaves e aromas irresistíveis.',
+    porcao: '1 a 2 pessoas',
+    preco: 0
+  }
+]
 
-type Props = {
-  restaurante: CardapioItem
+export type Props = {
+  restaurante: CardapioItem[]
 }
 
 interface ModalState extends CardapioItem {
   isVisible: boolean
-}
-
-const formataPreco = (preco = 0) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  }).format(preco)
 }
 
 const Product = ({ restaurante }: Props) => {
@@ -56,67 +63,82 @@ const Product = ({ restaurante }: Props) => {
     }
     return descricao
   }
+
+  const formataPreco = (preco = 0) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(preco)
+  }
+
   return (
     <>
-      <Card>
-        <img src={restaurante.foto} alt={restaurante.nome} />
-        <TitleCard>{restaurante.nome}</TitleCard>
-        <Descricao>{getDescricao(restaurante.descricao)}</Descricao>
-        <ButtonContainer
-          onClick={() =>
-            setModal({
-              isVisible: true,
-              foto: restaurante.foto,
-              id: restaurante.id,
-              nome: restaurante.nome,
-              descricao: restaurante.descricao,
-              porcao: '',
-              preco: 0
-            })
-          }
-        >
-          Mais detalhes
-        </ButtonContainer>
-      </Card>
-      <Modal className={modal.isVisible ? 'visivel' : ''}>
-        <ModalContent>
-          <header>
-            <img
-              src={fechar}
-              alt="Ícone de fechar"
+      {restaurante.map((restaurante, index) => (
+        <>
+          <ProductList className="container">
+            <Card key={restaurante.id}>
+              <img
+                src={restaurante.foto}
+                alt={`Mídia ${index + 1} de ${restaurante.nome}`}
+              />
+              <TitleCard>{restaurante.nome}</TitleCard>
+              <Descricao>{getDescricao(restaurante.descricao)}</Descricao>
+              <ButtonContainer
+                onClick={() =>
+                  setModal({
+                    isVisible: true,
+                    foto: restaurante.foto,
+                    id: restaurante.id,
+                    nome: restaurante.nome,
+                    descricao: restaurante.descricao,
+                    porcao: '',
+                    preco: restaurante.preco
+                  })
+                }
+              >
+                Adicionar ao carrinho
+              </ButtonContainer>
+            </Card>
+          </ProductList>
+          <ModalContainer className={modal.isVisible ? 'visivel' : ''}>
+            <ModalContent>
+              <header>
+                <img
+                  src={fechar}
+                  alt="Ícone de fechar"
+                  onClick={() => {
+                    closeModal()
+                  }}
+                />
+              </header>
+              <img src={restaurante.foto} alt={restaurante.nome} />
+              <Description>
+                <h4>{restaurante.nome}</h4>
+                <p>
+                  {restaurante.descricao}
+                  <br /> <br /> <span>Serve: de {restaurante.porcao}</span>
+                </p>
+                <ButtonContainer>
+                  Adicionar ao carrinho - {formataPreco(restaurante.preco)}
+                </ButtonContainer>
+              </Description>
+            </ModalContent>
+            <div
               onClick={() => {
                 closeModal()
               }}
-            />
-          </header>
-          <img src={restaurante.foto} alt={restaurante.nome} />
-          <Description>
-            <h4>{restaurante.nome}</h4>
-            <p>
-              {restaurante.descricao}
-              <br /> <br /> <span>Serve: de {restaurante.porcao}</span>
-            </p>
-            <ButtonContainer>
-              Adicionar ao carrinho - R${formataPreco(restaurante.preco)}
-            </ButtonContainer>
-          </Description>
-        </ModalContent>
-        <div
-          onClick={() => {
-            closeModal()
-          }}
-          className="overlay"
-        ></div>
-      </Modal>
+              className="overlay"
+            ></div>
+          </ModalContainer>
+        </>
+      ))}
     </>
   )
 }
 
 export default Product
 
-// import { useEffect, useState } from 'react'
-// import ProdutoImg from '../../assets/images/pizza.png'
-// import banner from '../../assets/images/banner.png'
+// import { CardapioItem } from '../../pages/Home'
 // import { ButtonContainer } from '../Button/styles'
 // import {
 //   Card,
@@ -127,37 +149,25 @@ export default Product
 //   Description
 // } from './styles'
 // import fechar from '../../assets/images/fechar.png'
-// import { CardapioItem, Restaurante } from '../../pages/Home'
-// import { useParams } from 'react-router-dom'
 
-// const mock: CardapioItem[] = [
-//   {
-//     foto: ProdutoImg,
-//     id: 1,
-//     nome: 'Ravioli al Tartufo Nero',
-//     descricao:
-//       'O Ravioli al Tartufo Nero é um requintado prato de massa artesanal, que celebra os sabores ricos e terrosos da trufa negra italiana. Cada ravióli é cuidadosamente recheado com uma mistura saborosa de ricota fresca, parmesão e trufas negras raladas, proporcionando uma combinação de texturas suaves e aromas irresistíveis.',
-//     porcao: '1 a 2 pessoas',
-//     preco: 0
-//   }
-// ]
+// import { useState } from 'react'
 
-// export type Props = {
-//   items: CardapioItem[]
-// }
-// interface CardapioItem {
-//   foto: string
-//   id: number
-//   nome: string
-//   descricao: string
-//   porcao: string
+// type Props = {
+//   restaurante: CardapioItem
 // }
 
 // interface ModalState extends CardapioItem {
 //   isVisible: boolean
 // }
 
-// const Product = ({ items }: Props) => {
+// const formataPreco = (preco = 0) => {
+//   return new Intl.NumberFormat('pt-BR', {
+//     style: 'currency',
+//     currency: 'BRL'
+//   }).format(preco)
+// }
+
+// const Product = ({ restaurante }: Props) => {
 //   const [modal, setModal] = useState<ModalState>({
 //     isVisible: false,
 //     foto: '',
@@ -186,32 +196,27 @@ export default Product
 //     }
 //     return descricao
 //   }
-
 //   return (
 //     <>
 //       <Card>
-//         {items.map((item, index) => (
-//           <div key={item.id}>
-//             <img src={item.foto} alt={`Imagem de ${index + 1} `} />
-//             <TitleCard>{item.nome}</TitleCard>
-//             <Descricao>{getDescricao(item.descricao)}</Descricao>
-//             <ButtonContainer
-//               onClick={() =>
-//                 setModal({
-//                   isVisible: true,
-//                   foto: item.foto,
-//                   id: item.id,
-//                   nome: item.nome,
-//                   descricao: item.descricao,
-//                   porcao: '',
-//                   preco: 0
-//                 })
-//               }
-//             >
-//               Adicionar ao carrinho
-//             </ButtonContainer>
-//           </div>
-//         ))}
+//         <img src={restaurante.foto} alt={restaurante.nome} />
+//         <TitleCard>{restaurante.nome}</TitleCard>
+//         <Descricao>{getDescricao(restaurante.descricao)}</Descricao>
+//         <ButtonContainer
+//           onClick={() =>
+//             setModal({
+//               isVisible: true,
+//               foto: restaurante.foto,
+//               id: restaurante.id,
+//               nome: restaurante.nome,
+//               descricao: restaurante.descricao,
+//               porcao: '',
+//               preco: 0
+//             })
+//           }
+//         >
+//           Mais detalhes
+//         </ButtonContainer>
 //       </Card>
 //       <Modal className={modal.isVisible ? 'visivel' : ''}>
 //         <ModalContent>
@@ -224,22 +229,16 @@ export default Product
 //               }}
 //             />
 //           </header>
-//           <img src={banner} alt="" />
+//           <img src={restaurante.foto} alt={restaurante.nome} />
 //           <Description>
-//             <h4>Pizza Marguerita</h4>
+//             <h4>{restaurante.nome}</h4>
 //             <p>
-//               A pizza Margherita é uma pizza clássica da culinária italiana,
-//               reconhecida por sua simplicidade e sabor inigualável. Ela é feita
-//               com uma base de massa fina e crocante, coberta com molho de tomate
-//               fresco, queijo mussarela de alta qualidade, manjericão fresco e
-//               azeite de oliva extra-virgem. A combinação de sabores é perfeita,
-//               com o molho de tomate suculento e ligeiramente ácido, o queijo
-//               derretido e cremoso e as folhas de manjericão frescas, que
-//               adicionam um toque de sabor herbáceo. É uma pizza simples, mas
-//               deliciosa, que agrada a todos os paladares e é uma ótima opção
-//               para qualquer ocasião. <br /> <br /> Serve: de 2 a 3 pessoas
+//               {restaurante.descricao}
+//               <br /> <br /> <span>Serve: de {restaurante.porcao}</span>
 //             </p>
-//             <ButtonContainer>Adicionar ao carrinho - R$60,90</ButtonContainer>
+//             <ButtonContainer>
+//               Adicionar ao carrinho - R${formataPreco(restaurante.preco)}
+//             </ButtonContainer>
 //           </Description>
 //         </ModalContent>
 //         <div

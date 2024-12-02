@@ -57,7 +57,7 @@ export const ModalContainer = styled.div`
   justify-content: center;
   z-index: 1;
 
-  &.visivel {
+  &.isVisible {
     display: flex;
   }
 
@@ -68,7 +68,7 @@ export const ModalContainer = styled.div`
     width: 100%;
     height: 100%;
     background-color: #000;
-    opacity: 0.3;
+    opacity: 0.8;
   }
 `
 export const ModalContent = styled.div`

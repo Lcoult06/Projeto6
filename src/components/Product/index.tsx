@@ -13,6 +13,8 @@ import {
 } from './styles'
 import fechar from '../../assets/images/fechar.png'
 import { CardapioItem, Restaurante } from '../../pages/Home'
+import { add, open } from '../../store/reducers/cart'
+import { useDispatch } from 'react-redux'
 
 const mock: CardapioItem[] = [
   {
@@ -26,36 +28,61 @@ const mock: CardapioItem[] = [
   }
 ]
 
-export type Props = {
-  restaurante: CardapioItem[]
+type Props = {
+  id: number
+  nome: string
+  descricao: string
+  foto: string
+  porcao: string
+  preco: number
 }
 
-interface ModalState extends CardapioItem {
-  isVisible: boolean
-}
+// export type Props = {
+//   restaurante: CardapioItem[]
+// }
 
-const Product = ({ restaurante }: Props) => {
-  const [modal, setModal] = useState<ModalState>({
-    isVisible: false,
-    foto: '',
-    id: 1,
-    nome: '',
-    descricao: '',
-    porcao: '',
-    preco: 0
-  })
+// interface ModalState extends CardapioItem {
+//   isVisible: boolean
+// }
 
-  const closeModal = () => {
-    setModal({
-      isVisible: false,
-      foto: '',
-      id: 1,
-      nome: '',
-      descricao: '',
-      porcao: '',
-      preco: 0
-    })
+const Product = ({ id, nome, descricao, porcao, foto, preco }: Props) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const dispatch = useDispatch()
+
+  const addToCart = () => {
+    const product = { id, nome, descricao, porcao, foto, preco }
+    dispatch(add(product))
+    dispatch(open())
   }
+
+  const showModal = () => {
+    if (isVisible) {
+      return 'isVisible'
+    }
+    return ''
+  }
+
+  // const [modal, setModal] = useState<ModalState>({
+  //   isVisible: false,
+  //   foto: '',
+  //   id: 1,
+  //   nome: '',
+  //   descricao: '',
+  //   porcao: '',
+  //   preco: 0
+  // })
+
+  // const closeModal = () => {
+  //   setModal({
+  //     isVisible: false,
+  //     foto: '',
+  //     id: 1,
+  //     nome: '',
+  //     descricao: '',
+  //     porcao: '',
+  //     preco: 0
+  //   })
+  // }
 
   const getDescricao = (descricao: string) => {
     if (descricao.length > 138) {
@@ -71,67 +98,50 @@ const Product = ({ restaurante }: Props) => {
     }).format(preco)
   }
 
+  // const dispatch = useDispatch()
+
+  // const addToCart = () => {
+  //   dispatch(add(restaurante))
+  //   dispatch(open())
+  // }
+
   return (
     <>
-      {restaurante.map((restaurante, index) => (
-        <>
-          <ProductList className="container">
-            <Card key={restaurante.id}>
+      <>
+        <ProductList className="container">
+          <Card>
+            <img src={foto} />
+            <TitleCard>{nome}</TitleCard>
+            <Descricao>{getDescricao(descricao)}</Descricao>
+            <ButtonContainer onClick={() => setIsVisible(true)}>
+              Adicionar ao carrinho
+            </ButtonContainer>
+          </Card>
+        </ProductList>
+        <ModalContainer className={showModal()}>
+          <ModalContent>
+            <header>
               <img
-                src={restaurante.foto}
-                alt={`Mídia ${index + 1} de ${restaurante.nome}`}
+                src={fechar}
+                alt="Ícone de fechar"
+                onClick={() => setIsVisible(false)}
               />
-              <TitleCard>{restaurante.nome}</TitleCard>
-              <Descricao>{getDescricao(restaurante.descricao)}</Descricao>
-              <ButtonContainer
-                onClick={() =>
-                  setModal({
-                    isVisible: true,
-                    foto: restaurante.foto,
-                    id: restaurante.id,
-                    nome: restaurante.nome,
-                    descricao: restaurante.descricao,
-                    porcao: '',
-                    preco: restaurante.preco
-                  })
-                }
-              >
-                Adicionar ao carrinho
+            </header>
+            <img src={foto} alt={nome} />
+            <Description>
+              <h4>{nome}</h4>
+              <p>
+                {descricao}
+                <br /> <br /> <span>Serve: de {porcao}</span>
+              </p>
+              <ButtonContainer onClick={addToCart}>
+                Adicionar ao carrinho - {formataPreco(preco)}
               </ButtonContainer>
-            </Card>
-          </ProductList>
-          <ModalContainer className={modal.isVisible ? 'visivel' : ''}>
-            <ModalContent>
-              <header>
-                <img
-                  src={fechar}
-                  alt="Ícone de fechar"
-                  onClick={() => {
-                    closeModal()
-                  }}
-                />
-              </header>
-              <img src={restaurante.foto} alt={restaurante.nome} />
-              <Description>
-                <h4>{restaurante.nome}</h4>
-                <p>
-                  {restaurante.descricao}
-                  <br /> <br /> <span>Serve: de {restaurante.porcao}</span>
-                </p>
-                <ButtonContainer>
-                  Adicionar ao carrinho - {formataPreco(restaurante.preco)}
-                </ButtonContainer>
-              </Description>
-            </ModalContent>
-            <div
-              onClick={() => {
-                closeModal()
-              }}
-              className="overlay"
-            ></div>
-          </ModalContainer>
-        </>
-      ))}
+            </Description>
+          </ModalContent>
+          <div onClick={() => setIsVisible(false)} className="overlay"></div>
+        </ModalContainer>
+      </>
     </>
   )
 }

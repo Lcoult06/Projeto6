@@ -22,6 +22,10 @@ export const CartContainer = styled.div`
   display: none;
   justify-content: flex-end;
   z-index: 1;
+
+  &.is-open {
+    display: flex;
+  }
 `
 
 export const Sidebar = styled.aside`

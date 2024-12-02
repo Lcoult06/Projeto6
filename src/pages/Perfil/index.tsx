@@ -5,7 +5,7 @@ import Header from '../../components/Header'
 import { useParams } from 'react-router-dom'
 import { Restaurante } from '../Home'
 import Product from '../../components/Product'
-import { ProductList } from './styles'
+import ProductList from '../../components/ProductList'
 import { useGetRestauranteQuery } from '../../services/api'
 
 const Perfil = () => {
@@ -30,9 +30,9 @@ const Perfil = () => {
     <>
       <Header />
       <Banner restaurante={restaurante} />
-      <ProductList className="container">
-        <Product key={restaurante.id} restaurante={restaurante.cardapio} />
-      </ProductList>
+      <div className="container">
+        <ProductList produtos={restaurante.cardapio} />
+      </div>
     </>
   )
 }

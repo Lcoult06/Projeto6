@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { cores } from '../../styles'
+import { breakpoints, cores } from '../../styles'
 import { TagContainer } from '../Tag/styles'
 import { ButtonLink } from '../Button/styles'
 
@@ -46,6 +46,10 @@ export const Descricao = styled.p`
   line-height: 22px;
   display: block;
   margin-top: 16px;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    font-size: 10px;
+  }
 `
 
 export const Infos = styled.div`

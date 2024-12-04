@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { cores } from '../../styles'
+import { breakpoints, cores } from '../../styles'
 import { ButtonContainer } from '../Button/styles'
 import { Link } from 'react-router-dom'
 
@@ -19,6 +19,14 @@ export const Card = styled.div`
 
   ${ButtonContainer} {
     width: 100%;
+  }
+
+  @media (max-width: ${breakpoints.desktop}) {
+    img {
+      width: 100%;
+      height: 167px;
+      object-fit: cover;
+    }
   }
 `
 export const TitleCard = styled.h3`
@@ -68,13 +76,13 @@ export const ModalContainer = styled.div`
     width: 100%;
     height: 100%;
     background-color: #000;
-    opacity: 0.8;
+    opacity: 0.5;
   }
 `
 export const ModalContent = styled.div`
   background-color: ${cores.vermelho};
   max-width: 1024px;
-  width: 100%;
+C
   height: 344px;
   position: relative;
   z-index: 1;
@@ -94,6 +102,20 @@ export const ModalContent = styled.div`
     margin-right: 32px;
     object-fit: cover;
   }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    display: flex;
+    width: 344px;
+    height: 600px;
+    flex-direction: column;
+    align-items: center;
+
+    > img {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  }
 `
 export const Description = styled.div`
   h4 {
@@ -111,5 +133,30 @@ export const Description = styled.div`
   }
   ${ButtonContainer} {
     padding: 4px 7px;
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: justify;
+
+      h4 {
+        font-size: 14px;
+      }
+      p {
+        font-size: 10px;
+        font-weight: 400;
+        color: ${cores.branca};
+        line-height: 22px;
+        margin-top: 16px;
+        margin-bottom: 27px;
+      }
+    }
+
+    ${ButtonContainer} {
+      padding: 4px 7px;
+    }
   }
 `

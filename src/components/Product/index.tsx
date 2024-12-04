@@ -108,16 +108,16 @@ const Product = ({ id, nome, descricao, porcao, foto, preco }: Props) => {
   return (
     <>
       <>
-        <ProductList className="container">
-          <Card>
-            <img src={foto} />
-            <TitleCard>{nome}</TitleCard>
-            <Descricao>{getDescricao(descricao)}</Descricao>
-            <ButtonContainer onClick={() => setIsVisible(true)}>
-              Adicionar ao carrinho
-            </ButtonContainer>
-          </Card>
-        </ProductList>
+        {/* <ProductList className="container"> */}
+        <Card>
+          <img src={foto} />
+          <TitleCard>{nome}</TitleCard>
+          <Descricao>{getDescricao(descricao)}</Descricao>
+          <ButtonContainer onClick={() => setIsVisible(true)}>
+            Mais detalhes
+          </ButtonContainer>
+        </Card>
+        {/* </ProductList> */}
         <ModalContainer className={showModal()}>
           <ModalContent>
             <header>

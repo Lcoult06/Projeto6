@@ -108,7 +108,6 @@ C
     width: 344px;
     height: 600px;
     flex-direction: column;
-    align-items: center;
 
     > img {
     margin: 0;
@@ -133,30 +132,5 @@ export const Description = styled.div`
   }
   ${ButtonContainer} {
     padding: 4px 7px;
-  }
-
-  @media (max-width: ${breakpoints.tablet}) {
-    div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: justify;
-
-      h4 {
-        font-size: 14px;
-      }
-      p {
-        font-size: 10px;
-        font-weight: 400;
-        color: ${cores.branca};
-        line-height: 22px;
-        margin-top: 16px;
-        margin-bottom: 27px;
-      }
-    }
-
-    ${ButtonContainer} {
-      padding: 4px 7px;
-    }
   }
 `

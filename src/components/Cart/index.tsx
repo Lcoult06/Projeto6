@@ -50,9 +50,12 @@ const Cart = () => {
         <Prices>
           Valor Total <span>{formataPreco(getTotalPrice())} </span>
         </Prices>
-        <Button type="button" title="Clique aquipara continuar com a entrega">
+        <Button type="button" title="Clique aqui para continuar com a entrega">
           Continuar com a entrega
         </Button>
+        {/* <Button type="button" title="Clique aqui para voltar ao carrinho">
+          Voltar para o carrinho
+        </Button> */}
       </Sidebar>
     </CartContainer>
   )

@@ -38,16 +38,14 @@ const Cart = () => {
     dispatch(remove(id))
   }
 
-  const delivery = () => {
-    closeCart()
-    dispatch(openDelivery())
-  }
-
   const goToCheckout = () => {
     if (items.length === 0) {
-      return closeCart()
+      closeCart()
+      return
     }
-    return delivery()
+    dispatch(openDelivery())
+    closeCart()
+    navigate('/checkout') // Adjust the path based on your routing configuration.
   }
 
   return (
@@ -72,7 +70,7 @@ const Cart = () => {
               Valor Total <span>{formataPreco(getTotalPrice())} </span>
             </Prices>
             <Button
-              onClick={() => delivery()}
+              onClick={goToCheckout}
               type="button"
               title="Clique aqui para continuar com a entrega"
             >

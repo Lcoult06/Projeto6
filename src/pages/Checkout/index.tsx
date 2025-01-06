@@ -15,11 +15,14 @@ import {
   Title
 } from './styles'
 import * as Yup from 'yup'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const Checkout = () => {
   const [purchase] = usePurchaseMutation()
   const { items } = useSelector((state: RootReducer) => state.cart)
+  const [step, setStep] = useState('carrinho') // começando no carrinho
+  const navigate = useNavigate()
 
   const form = useFormik({
     initialValues: {
@@ -120,213 +123,261 @@ const Checkout = () => {
   return (
     <div>
       <form onSubmit={form.handleSubmit}>
-        <CartContainer>
-          <Overlay />
-          <Sidebar>
-            <Title>Entrega</Title>
-            <InputGroup>
-              <label htmlFor="receiver">Quem irá receber</label>
-              <input
-                className={checkInputHasError('receiver') ? 'error' : ''}
-                type="text"
-                id="receiver"
-                name="receiver"
-                value={form.values.receiver}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor="adress">Endereço</label>
-              <input
-                className={checkInputHasError('adress') ? 'error' : ''}
-                type="text"
-                id="adress"
-                name="adress"
-                value={form.values.adress}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor="city">Cidade</label>
-              <input
-                className={checkInputHasError('city') ? 'error' : ''}
-                type="text"
-                id="city"
-                name="city"
-                value={form.values.city}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <Row>
+        {step === 'carrinho' && (
+          <CartContainer>
+            <Overlay />
+            <Sidebar>
+              <Title>Entrega</Title>
               <InputGroup>
-                <label htmlFor="zipCode">CEP</label>
+                <label htmlFor="receiver">Quem irá receber</label>
                 <input
-                  className={checkInputHasError('zipCode') ? 'error' : ''}
+                  className={checkInputHasError('receiver') ? 'error' : ''}
                   type="text"
-                  id="zipCode"
-                  name="zipCode"
-                  value={form.values.zipCode}
+                  id="receiver"
+                  name="receiver"
+                  value={form.values.receiver}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
               </InputGroup>
               <InputGroup>
-                <label htmlFor="number">Número</label>
+                <label htmlFor="adress">Endereço</label>
                 <input
-                  className={checkInputHasError('number') ? 'error' : ''}
+                  className={checkInputHasError('adress') ? 'error' : ''}
                   type="text"
-                  id="number"
-                  name="number"
-                  value={form.values.number}
-                  onChange={form.handleChange}
-                  onBlur={form.handleBlur}
-                />
-              </InputGroup>
-            </Row>
-            <InputGroup>
-              <label htmlFor="complement">Complemento (opcional)</label>
-              <input
-                className={checkInputHasError('complement') ? 'error' : ''}
-                type="text"
-                id="complement"
-                name="complement"
-                value={form.values.complement}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <ButtonContainer
-              type="button"
-              title="Clique aqui para continuar com a entrega"
-            >
-              Continuar com o pagamento
-            </ButtonContainer>
-            <ButtonContainer
-              type="button"
-              title="Clique aqui para voltar ao carrinho"
-            >
-              Voltar ao carrinho
-            </ButtonContainer>
-          </Sidebar>
-        </CartContainer>
-
-        {/* <CartContainer>
-          <Overlay />
-          <Sidebar>
-            <Title>Pagamento - Valor a pagar R$ 190,90</Title>
-            <InputGroup>
-              <label htmlFor="cardDisplayName">Nome no cartão</label>
-              <input
-                className={checkInputHasError('cardDisplayName') ? 'error' : ''}
-                type="text"
-                id="cardDisplayName"
-                name="cardDisplayName"
-                value={form.values.cardDisplayName}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <Row>
-              <InputGroup>
-                <label htmlFor="cardNumber">Número do cartão</label>
-                <input
-                  className={checkInputHasError('cardNumber') ? 'error' : ''}
-                  type="text"
-                  id="cardNumber"
-                  name="cardNumber"
-                  value={form.values.cardNumber}
+                  id="adress"
+                  name="adress"
+                  value={form.values.adress}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
               </InputGroup>
               <InputGroup>
-                <label htmlFor="cardCode">CVV</label>
+                <label htmlFor="city">Cidade</label>
                 <input
-                  className={checkInputHasError('cardCode') ? 'error' : ''}
+                  className={checkInputHasError('city') ? 'error' : ''}
                   type="text"
-                  id="cardCode"
-                  name="cardCode"
-                  value={form.values.cardCode}
+                  id="city"
+                  name="city"
+                  value={form.values.city}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
               </InputGroup>
-            </Row>
-            <Row>
+              <Row>
+                <InputGroup>
+                  <label htmlFor="zipCode">CEP</label>
+                  <input
+                    className={checkInputHasError('zipCode') ? 'error' : ''}
+                    type="text"
+                    id="zipCode"
+                    name="zipCode"
+                    value={form.values.zipCode}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <label htmlFor="number">Número</label>
+                  <input
+                    className={checkInputHasError('number') ? 'error' : ''}
+                    type="text"
+                    id="number"
+                    name="number"
+                    value={form.values.number}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                  />
+                </InputGroup>
+              </Row>
               <InputGroup>
-                <label htmlFor="expiresMonth">Mês de vencimento</label>
+                <label htmlFor="complement">Complemento (opcional)</label>
                 <input
-                  className={checkInputHasError('expiresMonth') ? 'error' : ''}
+                  className={checkInputHasError('complement') ? 'error' : ''}
                   type="text"
-                  id="expiresMonth"
-                  name="expiresMonth"
-                  value={form.values.expiresYear}
+                  id="complement"
+                  name="complement"
+                  value={form.values.complement}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
               </InputGroup>
-              <InputGroup>
-                <label htmlFor="expiresYear">Ano de vencimento</label>
-                <input
-                  className={checkInputHasError('expiresYear') ? 'error' : ''}
-                  type="text"
-                  id="expiresYear"
-                  name="expiresYear"
-                  value={form.values.expiresMonth}
-                  onChange={form.handleChange}
-                  onBlur={form.handleBlur}
-                />
-              </InputGroup>
-            </Row>
-            <ButtonContainer
-              type="button"
-              title="Clique aqui para finalizar o pagamento"
-            >
-              Finalizar pagamento
-            </ButtonContainer>
-            <ButtonContainer
-              type="button"
-              title="Clique aqui para voltar a edi;cão de endereço"
-            >
-              Voltar para a edição de endereço
-            </ButtonContainer>
-          </Sidebar>
-        </CartContainer> */}
-
-        {/* <CartContainer>
-          <Overlay />
-          <Sidebar>
-            <Title>Pedido realizado - </Title>
-            <ContainerConfirmation>
-              <p>
-                Estamos felizes em informar que seu pedido já está em processo
-                de preparação e, em breve, será entregue no endereço fornecido.{' '}
-                <br /> <br />
-              </p>
-              <p>
-                Gostaríamos de ressaltar que nossos entregadores não estão
-                autorizados a realizar cobranças extras. <br /> <br />
-              </p>
-              <p>
-                Lembre-se da importância de higienizar as mãos após o
-                recebimento do pedido, garantindo assim sua segurança e
-                bem-estar durante a refeição. <br /> <br />
-              </p>
-              <p>
-                Esperamos que desfrute de uma deliciosa e agradável experiência
-                gastronômica. Bom apetite! <br /> <br />
-              </p>
-              <ButtonContainer type="button" title="Clique aqui para concluir">
-                Concluir
+              <ButtonContainer
+                type="button"
+                title="Clique aqui para continuar o pagamento"
+                onClick={() => setStep('pagamento')}
+              >
+                Continuar com o pagamento
               </ButtonContainer>
-            </ContainerConfirmation>
-          </Sidebar>
-        </CartContainer> */}
+              <ButtonContainer
+                onClick={() => navigate('/restaurantes/:id')}
+                type="button"
+                title="Clique aqui para voltar ao carrinho"
+              >
+                Voltar ao carrinho
+              </ButtonContainer>
+            </Sidebar>
+          </CartContainer>
+        )}
+
+        {step === 'pagamento' && (
+          <CartContainer>
+            <Overlay />
+            <Sidebar>
+              <Title>Pagamento</Title>
+              <InputGroup>
+                <label htmlFor="cardDisplayName">Nome no cartão</label>
+                <input
+                  className={
+                    checkInputHasError('cardDisplayName') ? 'error' : ''
+                  }
+                  type="text"
+                  id="cardDisplayName"
+                  name="cardDisplayName"
+                  value={form.values.cardDisplayName}
+                  onChange={form.handleChange}
+                  onBlur={form.handleBlur}
+                />
+              </InputGroup>
+              <Row>
+                <InputGroup>
+                  <label htmlFor="cardNumber">Número do cartão</label>
+                  <input
+                    className={checkInputHasError('cardNumber') ? 'error' : ''}
+                    type="text"
+                    id="cardNumber"
+                    name="cardNumber"
+                    value={form.values.cardNumber}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <label htmlFor="cardCode">CVV</label>
+                  <input
+                    className={checkInputHasError('cardCode') ? 'error' : ''}
+                    type="text"
+                    id="cardCode"
+                    name="cardCode"
+                    value={form.values.cardCode}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                  />
+                </InputGroup>
+              </Row>
+              <Row>
+                <InputGroup>
+                  <label htmlFor="expiresMonth">Mês de vencimento</label>
+                  <input
+                    className={
+                      checkInputHasError('expiresMonth') ? 'error' : ''
+                    }
+                    type="text"
+                    id="expiresMonth"
+                    name="expiresMonth"
+                    value={form.values.expiresMonth}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <label htmlFor="expiresYear">Ano de vencimento</label>
+                  <input
+                    className={checkInputHasError('expiresYear') ? 'error' : ''}
+                    type="text"
+                    id="expiresYear"
+                    name="expiresYear"
+                    value={form.values.expiresYear}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                  />
+                </InputGroup>
+              </Row>
+              <ButtonContainer
+                type="button"
+                onClick={() => setStep('carrinho')}
+              >
+                Voltar para a edição de endereço
+              </ButtonContainer>
+              <ButtonContainer
+                type="button"
+                onClick={() => setStep('confirmacao')}
+              >
+                Finalizar pagamento
+              </ButtonContainer>
+            </Sidebar>
+          </CartContainer>
+        )}
+
+        {step === 'confirmacao' && (
+          <CartContainer>
+            <Overlay />
+            <Sidebar>
+              <Title>Pedido realizado - </Title>
+              <ContainerConfirmation>
+                <p>
+                  Estamos felizes em informar que seu pedido já está em processo
+                  de preparação e, em breve, será entregue no endereço
+                  fornecido. <br /> <br />
+                </p>
+                <p>
+                  Gostaríamos de ressaltar que nossos entregadores não estão
+                  autorizados a realizar cobranças extras. <br /> <br />
+                </p>
+                <p>
+                  Lembre-se da importância de higienizar as mãos após o
+                  recebimento do pedido, garantindo assim sua segurança e
+                  bem-estar durante a refeição. <br /> <br />
+                </p>
+                <p>
+                  Esperamos que desfrute de uma deliciosa e agradável
+                  experiência gastronômica. Bom apetite! <br /> <br />
+                </p>
+                <ButtonContainer
+                  type="submit"
+                  title="Clique aqui para concluir"
+                >
+                  Concluir
+                </ButtonContainer>
+              </ContainerConfirmation>
+            </Sidebar>
+          </CartContainer>
+        )}
       </form>
     </div>
   )
 }
+
 export default Checkout
+
+{
+  /* <CartContainer>
+      <Overlay />
+      <Sidebar>
+        <Title>Pedido realizado - </Title>
+        <ContainerConfirmation>
+          <p>
+            Estamos felizes em informar que seu pedido já está em processo
+            de preparação e, em breve, será entregue no endereço fornecido.{' '}
+            <br /> <br />
+          </p>
+          <p>
+            Gostaríamos de ressaltar que nossos entregadores não estão
+            autorizados a realizar cobranças extras. <br /> <br />
+          </p>
+          <p>
+            Lembre-se da importância de higienizar as mãos após o
+            recebimento do pedido, garantindo assim sua segurança e
+            bem-estar durante a refeição. <br /> <br />
+          </p>
+          <p>
+            Esperamos que desfrute de uma deliciosa e agradável experiência
+            gastronômica. Bom apetite! <br /> <br />
+          </p>
+          <ButtonContainer type="button" title="Clique aqui para concluir">
+            Concluir
+          </ButtonContainer>
+        </ContainerConfirmation>
+      </Sidebar>
+    </CartContainer> */
+}

@@ -14,25 +14,12 @@ import {
   Sidebar,
   Title
 } from './styles'
-
-import {
-  closeDelivery,
-  openPayment,
-  closePayment,
-  openConfirmation,
-  closeConfirmation,
-  openDelivery
-} from '../../store/reducers/checkout'
-
 import * as Yup from 'yup'
 import { Navigate } from 'react-router-dom'
 
 const Checkout = () => {
   const [purchase] = usePurchaseMutation()
   const { items } = useSelector((state: RootReducer) => state.cart)
-  const { deliveryIsOpen, paymentIsOpen, confirmationIsOpen } = useSelector(
-    (state: RootReducer) => state.checkout
-  )
 
   const form = useFormik({
     initialValues: {
@@ -133,7 +120,7 @@ const Checkout = () => {
   return (
     <div>
       <form onSubmit={form.handleSubmit}>
-        <CartContainer className={deliveryIsOpen ? 'is-open' : ''}>
+        <CartContainer>
           <Overlay />
           <Sidebar>
             <Title>Entrega</Title>

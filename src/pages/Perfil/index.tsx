@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react'
 import Banner from '../../components/Banner'
 import Header from '../../components/Header'
 
 import { useParams } from 'react-router-dom'
-import { Restaurante } from '../Home'
-import Product from '../../components/Product'
+
 import ProductList from '../../components/ProductList'
 import { useGetRestauranteQuery } from '../../services/api'
 

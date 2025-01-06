@@ -1,6 +1,5 @@
 import { Image, Title, Title2 } from './styles'
 
-import bannerImg from '../../assets/images/banner.png'
 import { Restaurante } from '../../pages/Home'
 
 type Props = {

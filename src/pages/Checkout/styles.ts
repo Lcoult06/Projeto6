@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { ButtonContainer } from '../Button/styles'
+
 import { cores } from '../../styles'
-import lixeira from '../../assets/images/lixeira.png'
+import { ButtonContainer } from '../../components/Button/styles'
 
 export const Overlay = styled.div`
   position: absolute;
@@ -25,6 +25,14 @@ export const CartContainer = styled.div`
 
   &.is-open {
     display: flex;
+  }
+
+  small {
+    color: ${cores.bege};
+    font-size: 12px;
+    font-weight: bold;
+    // margin-top: 5px;
+    // margin-bottom: 5px;
   }
 `
 
@@ -56,10 +64,11 @@ export const InputGroup = styled.div`
     font-style: normal; // Estilo da fonte do label
     font-weight: 700; // Peso da fonte do label
     display: block; // Exibe o label como bloco
+    margin: 8px 0;
   }
 
   input {
-    margin: 8px 0; // Espaçamento vertical
+    margin: 8px 0;
     padding: 0 8px; // Espaçamento interno horizontal
     background-color: ${cores.bege}; // Cor de fundo do input
     height: 32px; // Altura do input
@@ -69,6 +78,20 @@ export const InputGroup = styled.div`
 `
 export const Row = styled.div`
   display: flex;
-  column-gap: 24px;
+  column-gap: 34px;
   align-items: flex-end;
+  margin-bottom: 8px;
+`
+
+export const ContainerConfirmation = styled.div`
+  p {
+    color: ${cores.bege}; // Cor do texto
+    font-size: 14px; // Tamanho da fonte
+    font-weight: 400; // Peso da fonte
+    line-height: 22px; // Altura da linha
+  }
+
+  ${ButtonContainer} {
+    margin-top: 24px; // Espaçamento inferior
+  }
 `

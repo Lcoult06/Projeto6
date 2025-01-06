@@ -6,13 +6,12 @@ import {
   Card,
   TitleCard,
   Descricao,
-  ProductList,
   ModalContent,
   Description,
   ModalContainer
 } from './styles'
 import fechar from '../../assets/images/fechar.png'
-import { CardapioItem, Restaurante } from '../../pages/Home'
+import { CardapioItem } from '../../pages/Home'
 import { add, open } from '../../store/reducers/cart'
 import { useDispatch } from 'react-redux'
 

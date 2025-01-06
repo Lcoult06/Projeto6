@@ -1,6 +1,7 @@
 import styled from 'styled-components'
-import { ButtonContainer } from '../Button/styles'
+
 import { cores } from '../../styles'
+import { ButtonContainer } from '../../components/Button/styles'
 
 export const Overlay = styled.div`
   position: absolute;
@@ -18,7 +19,7 @@ export const CartContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   justify-content: flex-end;
   z-index: 1;
 
@@ -80,4 +81,17 @@ export const Row = styled.div`
   column-gap: 34px;
   align-items: flex-end;
   margin-bottom: 8px;
+`
+
+export const ContainerConfirmation = styled.div`
+  p {
+    color: ${cores.bege}; // Cor do texto
+    font-size: 14px; // Tamanho da fonte
+    font-weight: 400; // Peso da fonte
+    line-height: 22px; // Altura da linha
+  }
+
+  ${ButtonContainer} {
+    margin-top: 24px; // Espaçamento inferior
+  }
 `

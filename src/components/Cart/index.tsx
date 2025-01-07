@@ -67,10 +67,9 @@ const Cart = () => {
               ))}
             </ul>
             <Prices>
-              Valor Total <span>{formataPreco(getTotalPrice())} </span>
+              <p>Valor Total</p> <span>{formataPreco(getTotalPrice())} </span>
             </Prices>
             <Button
-              onClick={goToCheckout}
               type="button"
               title="Clique aqui para continuar com a entrega"
             >

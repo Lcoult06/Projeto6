@@ -51,6 +51,7 @@ const Product = ({ id, nome, descricao, porcao, foto, preco }: Props) => {
   const addToCart = () => {
     const product = { id, nome, descricao, porcao, foto, preco }
     dispatch(add(product))
+    setIsVisible(false)
     dispatch(open())
   }
 

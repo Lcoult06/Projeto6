@@ -31,9 +31,11 @@ export const CartContainer = styled.div`
 export const Sidebar = styled.aside`
   background-color: ${cores.vermelho};
   z-index: 1;
-  padding: 32px 8px 0 8px;
+  padding: 32px 8px 64px 8px;
   max-width: 360px;
   width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   .empty-text {
     font-weight: bold;
@@ -48,20 +50,17 @@ export const Sidebar = styled.aside`
     width: 100%;
   }
 `
-export const Prices = styled.p`
-  font-size: 14px;
-  font-weight: 700;
-  color: ${cores.bege};
-  margin-top: 40px;
-  margin-bottom: 16px;
 
-  span {
-    font-size: 14px;
-    font-weight: 700;
-    color: ${cores.bege};
-    padding-left: 206px;
-    white-space: nowrap;
-  }
+export const Prices = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  margin-top: 40px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  color: ${cores.bege};
 `
 
 export const CartItem = styled.li`

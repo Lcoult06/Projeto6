@@ -19,7 +19,7 @@ export const CartContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   justify-content: flex-end;
   z-index: 1;
 
@@ -74,6 +74,11 @@ export const InputGroup = styled.div`
     height: 32px; // Altura do input
     border: 1px solid ${cores.bege}; // Borda do input
     width: 100%; // Largura total do input
+
+      &.error {
+      border: 1px solid red;
+    }
+  }
   }
 `
 export const Row = styled.div`

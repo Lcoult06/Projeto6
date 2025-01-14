@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { Navigate } from 'react-router-dom'
+import InputMask from 'react-input-mask'
 
 import { usePurchaseMutation } from '../../services/api'
 import { ButtonContainer } from '../../components/Button/styles'
@@ -27,6 +28,7 @@ import {
   Sidebar,
   Title
 } from './styles'
+import Card from '../Card'
 
 const Checkout = () => {
   const [purchase, { data, isLoading, isSuccess }] = usePurchaseMutation()
@@ -61,7 +63,7 @@ const Checkout = () => {
     dispatch(openDelivery())
   }
 
-  const openConfirmationCart = () => {
+  const showInfosConfirmation = () => {
     dispatch(closePayment())
     dispatch(openConfirmation())
   }
@@ -156,10 +158,16 @@ const Checkout = () => {
             }
           }
         },
-        products: items.map((item) => ({
-          id: item.id,
-          price: item.preco as number
-        }))
+        products: [
+          {
+            id: 1,
+            price: 10
+          }
+        ]
+        // products: items.map((item) => ({
+        //   id: item.id,
+        //   price: item.preco as number
+        // }))
       })
     }
   })
@@ -172,196 +180,209 @@ const Checkout = () => {
     return hasError
   }
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     dispatch(clear())
-  //   }
-  // }, [isSuccess, dispatch])
-
-  // if (items.length === 0 && !isSuccess) {
-  //   return <Navigate to="/restaurantes/:id" />
-  // }
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clear())
+    }
+  }, [isSuccess, dispatch])
 
   return (
     <div>
       <form onSubmit={form.handleSubmit}>
-        <CartContainer className={deliveryIsOpen ? 'is-open' : ''}>
-          <Overlay onClick={closeCart} />
-          <Sidebar>
-            <Title>Entrega</Title>
-            <InputGroup>
-              <label htmlFor="receiver">Quem irá receber</label>
-              <input
-                className={checkInputHasError('receiver') ? 'error' : ''}
-                type="text"
-                id="receiver"
-                name="receiver"
-                value={form.values.receiver}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor="adress">Endereço</label>
-              <input
-                className={checkInputHasError('adress') ? 'error' : ''}
-                type="text"
-                id="adress"
-                name="adress"
-                value={form.values.adress}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <InputGroup>
-              <label htmlFor="city">Cidade</label>
-              <input
-                className={checkInputHasError('city') ? 'error' : ''}
-                type="text"
-                id="city"
-                name="city"
-                value={form.values.city}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <Row>
+        <Card>
+          <CartContainer className={deliveryIsOpen ? 'is-open' : ''}>
+            <Overlay onClick={closeCart} />
+            <Sidebar>
+              <Title>Entrega</Title>
               <InputGroup>
-                <label htmlFor="zipCode">CEP</label>
+                <label htmlFor="receiver">Quem irá receber</label>
                 <input
-                  className={checkInputHasError('zipCode') ? 'error' : ''}
+                  className={checkInputHasError('receiver') ? 'error' : ''}
                   type="text"
-                  id="zipCode"
-                  name="zipCode"
-                  value={form.values.zipCode}
+                  id="receiver"
+                  name="receiver"
+                  value={form.values.receiver}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
               </InputGroup>
               <InputGroup>
-                <label htmlFor="number">Número</label>
+                <label htmlFor="adress">Endereço</label>
                 <input
-                  className={checkInputHasError('number') ? 'error' : ''}
+                  className={checkInputHasError('adress') ? 'error' : ''}
                   type="text"
-                  id="number"
-                  name="number"
-                  value={form.values.number}
+                  id="adress"
+                  name="adress"
+                  value={form.values.adress}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
               </InputGroup>
-            </Row>
-            <InputGroup>
-              <label htmlFor="complement">Complemento (opcional)</label>
-              <input
-                className={checkInputHasError('complement') ? 'error' : ''}
-                type="text"
-                id="complement"
-                name="complement"
-                value={form.values.complement}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <ButtonContainer
-              type="button"
-              title="Clique aqui para continuar o pagamento"
-              onClick={openPaymentCart}
-            >
-              Continuar com o pagamento
-            </ButtonContainer>
-            <ButtonContainer
-              onClick={openCart}
-              type="button"
-              title="Clique aqui para voltar ao carrinho"
-            >
-              Voltar ao carrinho
-            </ButtonContainer>
-          </Sidebar>
-        </CartContainer>
+              <InputGroup>
+                <label htmlFor="city">Cidade</label>
+                <input
+                  className={checkInputHasError('city') ? 'error' : ''}
+                  type="text"
+                  id="city"
+                  name="city"
+                  value={form.values.city}
+                  onChange={form.handleChange}
+                  onBlur={form.handleBlur}
+                />
+              </InputGroup>
+              <Row>
+                <InputGroup>
+                  <label htmlFor="zipCode">CEP</label>
+                  <InputMask
+                    className={checkInputHasError('zipCode') ? 'error' : ''}
+                    type="text"
+                    id="zipCode"
+                    name="zipCode"
+                    value={form.values.zipCode}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                    mask="99.999-999"
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <label htmlFor="number">Número</label>
+                  <input
+                    className={checkInputHasError('number') ? 'error' : ''}
+                    type="text"
+                    id="number"
+                    name="number"
+                    value={form.values.number}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                  />
+                </InputGroup>
+              </Row>
+              <InputGroup>
+                <label htmlFor="complement">Complemento (opcional)</label>
+                <input
+                  className={checkInputHasError('complement') ? 'error' : ''}
+                  type="text"
+                  id="complement"
+                  name="complement"
+                  value={form.values.complement}
+                  onChange={form.handleChange}
+                  onBlur={form.handleBlur}
+                />
+              </InputGroup>
+              <ButtonContainer
+                type="button"
+                title="Clique aqui para continuar o pagamento"
+                onClick={openPaymentCart}
+              >
+                Continuar com o pagamento
+              </ButtonContainer>
+              <ButtonContainer
+                onClick={openCart}
+                type="button"
+                title="Clique aqui para voltar ao carrinho"
+              >
+                Voltar ao carrinho
+              </ButtonContainer>
+            </Sidebar>
+          </CartContainer>
+        </Card>
 
-        <CartContainer className={paymentIsOpen ? 'is-open' : ''}>
-          <Overlay onClick={closeCart} />
-          <Sidebar>
-            <Title>
-              Pagamento - Valor a pagar {formataPreco(getTotalPrice())}
-            </Title>
-            <InputGroup>
-              <label htmlFor="cardDisplayName">Nome no cartão</label>
-              <input
-                className={checkInputHasError('cardDisplayName') ? 'error' : ''}
-                type="text"
-                id="cardDisplayName"
-                name="cardDisplayName"
-                value={form.values.cardDisplayName}
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-              />
-            </InputGroup>
-            <Row>
+        <Card>
+          <CartContainer className={paymentIsOpen ? 'is-open' : ''}>
+            <Overlay onClick={closeCart} />
+            <Sidebar>
+              <Title>
+                Pagamento - Valor a pagar {formataPreco(getTotalPrice())}
+              </Title>
               <InputGroup>
-                <label htmlFor="cardNumber">Número do cartão</label>
+                <label htmlFor="cardDisplayName">Nome no cartão</label>
                 <input
-                  className={checkInputHasError('cardNumber') ? 'error' : ''}
+                  className={
+                    checkInputHasError('cardDisplayName') ? 'error' : ''
+                  }
                   type="text"
-                  id="cardNumber"
-                  name="cardNumber"
-                  value={form.values.cardNumber}
+                  id="cardDisplayName"
+                  name="cardDisplayName"
+                  value={form.values.cardDisplayName}
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
               </InputGroup>
-              <InputGroup>
-                <label htmlFor="cardCode">CVV</label>
-                <input
-                  className={checkInputHasError('cardCode') ? 'error' : ''}
-                  type="text"
-                  id="cardCode"
-                  name="cardCode"
-                  value={form.values.cardCode}
-                  onChange={form.handleChange}
-                  onBlur={form.handleBlur}
-                />
-              </InputGroup>
-            </Row>
-            <Row>
-              <InputGroup>
-                <label htmlFor="expiresMonth">Mês de vencimento</label>
-                <input
-                  className={checkInputHasError('expiresMonth') ? 'error' : ''}
-                  type="text"
-                  id="expiresMonth"
-                  name="expiresMonth"
-                  value={form.values.expiresMonth}
-                  onChange={form.handleChange}
-                  onBlur={form.handleBlur}
-                />
-              </InputGroup>
-              <InputGroup>
-                <label htmlFor="expiresYear">Ano de vencimento</label>
-                <input
-                  className={checkInputHasError('expiresYear') ? 'error' : ''}
-                  type="text"
-                  id="expiresYear"
-                  name="expiresYear"
-                  value={form.values.expiresYear}
-                  onChange={form.handleChange}
-                  onBlur={form.handleBlur}
-                />
-              </InputGroup>
-            </Row>
-            <ButtonContainer
-              type="submit"
-              title="Clique aqui para finalizar a compra"
-            >
-              Finalizar pagamento
-            </ButtonContainer>
-            <ButtonContainer type="button" onClick={openDeliveryCart}>
-              Voltar para a edição de endereço
-            </ButtonContainer>
-          </Sidebar>
-        </CartContainer>
+              <Row>
+                <InputGroup>
+                  <label htmlFor="cardNumber">Número do cartão</label>
+                  <InputMask
+                    className={checkInputHasError('cardNumber') ? 'error' : ''}
+                    type="text"
+                    id="cardNumber"
+                    name="cardNumber"
+                    value={form.values.cardNumber}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                    mask="9999 9999 9999 9999"
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <label htmlFor="cardCode">CVV</label>
+                  <InputMask
+                    className={checkInputHasError('cardCode') ? 'error' : ''}
+                    type="text"
+                    id="cardCode"
+                    name="cardCode"
+                    value={form.values.cardCode}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                    mask="999"
+                  />
+                </InputGroup>
+              </Row>
+              <Row>
+                <InputGroup>
+                  <label htmlFor="expiresMonth">Mês de vencimento</label>
+                  <InputMask
+                    className={
+                      checkInputHasError('expiresMonth') ? 'error' : ''
+                    }
+                    type="text"
+                    id="expiresMonth"
+                    name="expiresMonth"
+                    value={form.values.expiresMonth}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                    mask="99"
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <label htmlFor="expiresYear">Ano de vencimento</label>
+                  <InputMask
+                    className={checkInputHasError('expiresYear') ? 'error' : ''}
+                    type="text"
+                    id="expiresYear"
+                    name="expiresYear"
+                    value={form.values.expiresYear}
+                    onChange={form.handleChange}
+                    onBlur={form.handleBlur}
+                    mask="99"
+                  />
+                </InputGroup>
+              </Row>
+              <ButtonContainer
+                type="submit"
+                onClick={showInfosConfirmation}
+                title="Clique aqui para finalizar a compra"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Finalizando pagamento...' : 'Finalizar pagamento'}
+              </ButtonContainer>
+              <ButtonContainer type="button" onClick={openDeliveryCart}>
+                Voltar para a edição de endereço
+              </ButtonContainer>
+            </Sidebar>
+          </CartContainer>
+        </Card>
+      </form>
 
+      <Card>
         <CartContainer className={confirmationIsOpen ? 'is-open' : ''}>
           <Overlay />
           <Sidebar>
@@ -395,7 +416,7 @@ const Checkout = () => {
             </ContainerConfirmation>
           </Sidebar>
         </CartContainer>
-      </form>
+      </Card>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { Navigate } from 'react-router-dom'
+import { Form, Navigate } from 'react-router-dom'
 import InputMask from 'react-input-mask'
 
 import { usePurchaseMutation } from '../../services/api'
@@ -20,6 +20,7 @@ import {
 } from '../../store/reducers/checkout'
 
 import {
+  Buttons,
   CartContainer,
   ContainerConfirmation,
   InputGroup,
@@ -28,7 +29,6 @@ import {
   Sidebar,
   Title
 } from './styles'
-import Card from '../Card'
 
 const Checkout = () => {
   const [purchase, { data, isLoading, isSuccess }] = usePurchaseMutation()
@@ -136,59 +136,69 @@ const Checkout = () => {
         .required('O campo é obrigatório')
     }),
     onSubmit: (values) => {
-      purchase({
-        delivery: {
-          receiver: values.receiver,
-          address: {
-            description: values.adress,
-            city: values.city,
-            zipCode: values.zipCode,
-            number: Number(values.number),
-            complement: values.complement
-          }
-        },
-        payment: {
-          card: {
-            name: values.cardDisplayName,
-            number: values.cardNumber,
-            code: Number(values.cardCode),
-            expires: {
-              month: Number(values.expiresMonth),
-              year: Number(values.expiresYear)
-            }
-          }
-        },
-        products: [
-          {
-            id: 1,
-            price: 10
-          }
-        ]
-        // products: items.map((item) => ({
-        //   id: item.id,
-        //   price: item.preco as number
-        // }))
-      })
+      console.log(values)
+      // purchase({
+      //   delivery: {
+      //     receiver: values.receiver,
+      //     address: {
+      //       description: values.adress,
+      //       city: values.city,
+      //       zipCode: values.zipCode,
+      //       number: Number(values.number),
+      //       complement: values.complement
+      //     }
+      //   },
+      //   payment: {
+      //     card: {
+      //       name: values.cardDisplayName,
+      //       number: values.cardNumber,
+      //       code: Number(values.cardCode),
+      //       expires: {
+      //         month: Number(values.expiresMonth),
+      //         year: Number(values.expiresYear)
+      //       }
+      //     }
+      //   },
+      //   products: [
+      //     {
+      //       id: 1,
+      //       price: 10
+      //     }
+      //   ]
+      //   // products: items.map((item) => ({
+      //   //   id: item.id,
+      //   //   price: item.preco as number
+      //   // }))
+      // })
     }
   })
 
-  const checkInputHasError = (fieldName: string) => {
+  console.log(form)
+
+  const getErrorMessage = (fieldName: string, message?: string) => {
     const isTouched = fieldName in form.touched
-    const isInvalid = fieldName in form.touched
-    const hasError = isTouched && isInvalid
+    const isInvalid = fieldName in form.errors
 
-    return hasError
+    if (isTouched && isInvalid) return message
+    return ''
   }
+  // const checkInputHasError = (fieldName: string) => {
+  //   const isTouched = fieldName in form.touched
+  //   const isInvalid = fieldName in form.touched
+  //   const hasError = isTouched && isInvalid
 
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(clear())
-    }
-  }, [isSuccess, dispatch])
+  //   return hasError
+  // }
+
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     dispatch(clear())
+  //   }
+  // }, [isSuccess, dispatch])
 
   return (
     <div>
-      <form onSubmit={form.handleSubmit}>
+      {/* <form onSubmit={form.handleSubmit} className="container">
         <Card>
           <CartContainer className={deliveryIsOpen ? 'is-open' : ''}>
             <Overlay onClick={closeCart} />
@@ -197,7 +207,7 @@ const Checkout = () => {
               <InputGroup>
                 <label htmlFor="receiver">Quem irá receber</label>
                 <input
-                  className={checkInputHasError('receiver') ? 'error' : ''}
+                  // className={checkInputHasError('receiver') ? 'error' : ''}
                   type="text"
                   id="receiver"
                   name="receiver"
@@ -205,11 +215,14 @@ const Checkout = () => {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
+                <small>
+                  {getErrorMessage('receiver', form.errors.receiver)}
+                </small>
               </InputGroup>
               <InputGroup>
                 <label htmlFor="adress">Endereço</label>
                 <input
-                  className={checkInputHasError('adress') ? 'error' : ''}
+                  // className={checkInputHasError('adress') ? 'error' : ''}
                   type="text"
                   id="adress"
                   name="adress"
@@ -217,11 +230,12 @@ const Checkout = () => {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
+                <small>{getErrorMessage('adress', form.errors.adress)}</small>
               </InputGroup>
               <InputGroup>
                 <label htmlFor="city">Cidade</label>
                 <input
-                  className={checkInputHasError('city') ? 'error' : ''}
+                  // className={checkInputHasError('city') ? 'error' : ''}
                   type="text"
                   id="city"
                   name="city"
@@ -229,12 +243,13 @@ const Checkout = () => {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
+                <small>{getErrorMessage('city', form.errors.city)}</small>
               </InputGroup>
               <Row>
                 <InputGroup>
                   <label htmlFor="zipCode">CEP</label>
                   <InputMask
-                    className={checkInputHasError('zipCode') ? 'error' : ''}
+                    // className={checkInputHasError('zipCode') ? 'error' : ''}
                     type="text"
                     id="zipCode"
                     name="zipCode"
@@ -243,11 +258,14 @@ const Checkout = () => {
                     onBlur={form.handleBlur}
                     mask="99.999-999"
                   />
+                  <small>
+                    {getErrorMessage('zipCode', form.errors.zipCode)}
+                  </small>
                 </InputGroup>
                 <InputGroup>
                   <label htmlFor="number">Número</label>
                   <input
-                    className={checkInputHasError('number') ? 'error' : ''}
+                    // className={checkInputHasError('number') ? 'error' : ''}
                     type="text"
                     id="number"
                     name="number"
@@ -255,12 +273,13 @@ const Checkout = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
+                  <small>{getErrorMessage('number', form.errors.number)}</small>
                 </InputGroup>
               </Row>
               <InputGroup>
                 <label htmlFor="complement">Complemento (opcional)</label>
                 <input
-                  className={checkInputHasError('complement') ? 'error' : ''}
+                  // className={checkInputHasError('complement') ? 'error' : ''}
                   type="text"
                   id="complement"
                   name="complement"
@@ -268,26 +287,63 @@ const Checkout = () => {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                 />
+                <small>
+                  {getErrorMessage('complement', form.errors.complement)}
+                </small>
               </InputGroup>
-              <ButtonContainer
-                type="button"
-                title="Clique aqui para continuar o pagamento"
-                onClick={openPaymentCart}
-              >
-                Continuar com o pagamento
-              </ButtonContainer>
-              <ButtonContainer
-                onClick={openCart}
-                type="button"
-                title="Clique aqui para voltar ao carrinho"
-              >
-                Voltar ao carrinho
-              </ButtonContainer>
+              <Buttons>
+                <ButtonContainer
+                  type="button"
+                  onClick={() => form.handleSubmit()}
+                  title="Clique aqui para continuar o pagamento"
+                >
+                  Continuar com o pagamento
+                </ButtonContainer>
+              </Buttons>
             </Sidebar>
           </CartContainer>
         </Card>
+      </form> */}
+    </div>
+  )
+}
 
-        <Card>
+export default Checkout
+
+{
+  /* <CartContainer>
+  <Overlay />
+  <Sidebar>
+  <Title>Pedido realizado - </Title>
+  <ContainerConfirmation>
+          <p>
+            Estamos felizes em informar que seu pedido já está em processo
+            de preparação e, em breve, será entregue no endereço fornecido.{' '}
+            <br /> <br />
+          </p>
+          <p>
+            Gostaríamos de ressaltar que nossos entregadores não estão
+            autorizados a realizar cobranças extras. <br /> <br />
+          </p>
+          <p>
+            Lembre-se da importância de higienizar as mãos após o
+            recebimento do pedido, garantindo assim sua segurança e
+            bem-estar durante a refeição. <br /> <br />
+          </p>
+          <p>
+            Esperamos que desfrute de uma deliciosa e agradável experiência
+            gastronômica. Bom apetite! <br /> <br />
+          </p>
+          <ButtonContainer type="button" title="Clique aqui para concluir">
+            Concluir
+          </ButtonContainer>
+        </ContainerConfirmation>
+      </Sidebar>
+    </CartContainer> */
+}
+
+{
+  /* <Card>
           <CartContainer className={paymentIsOpen ? 'is-open' : ''}>
             <Overlay onClick={closeCart} />
             <Sidebar>
@@ -416,41 +472,5 @@ const Checkout = () => {
             </ContainerConfirmation>
           </Sidebar>
         </CartContainer>
-      </Card>
-    </div>
-  )
-}
-
-export default Checkout
-
-{
-  /* <CartContainer>
-  <Overlay />
-  <Sidebar>
-  <Title>Pedido realizado - </Title>
-  <ContainerConfirmation>
-          <p>
-            Estamos felizes em informar que seu pedido já está em processo
-            de preparação e, em breve, será entregue no endereço fornecido.{' '}
-            <br /> <br />
-          </p>
-          <p>
-            Gostaríamos de ressaltar que nossos entregadores não estão
-            autorizados a realizar cobranças extras. <br /> <br />
-          </p>
-          <p>
-            Lembre-se da importância de higienizar as mãos após o
-            recebimento do pedido, garantindo assim sua segurança e
-            bem-estar durante a refeição. <br /> <br />
-          </p>
-          <p>
-            Esperamos que desfrute de uma deliciosa e agradável experiência
-            gastronômica. Bom apetite! <br /> <br />
-          </p>
-          <ButtonContainer type="button" title="Clique aqui para concluir">
-            Concluir
-          </ButtonContainer>
-        </ContainerConfirmation>
-      </Sidebar>
-    </CartContainer> */
+      </Card> */
 }

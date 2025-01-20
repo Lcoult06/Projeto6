@@ -26,6 +26,14 @@ export const CartContainer = styled.div`
   &.is-open {
     display: flex;
   }
+
+  small {
+    color: ${cores.bege};
+    font-size: 12px;
+    font-weight: bold;
+    // margin-top: 5px;
+    // margin-bottom: 5px;
+  }
 `
 
 export const Sidebar = styled.aside`
@@ -104,4 +112,70 @@ export const CartItem = styled.li`
     position: absolute;
     bottom: 8px;
     right: 8px;
+`
+
+export const Title = styled.h3`
+  font-size: 16px;
+  font-weight: 700;
+  color: ${cores.bege};
+  margin-bottom: 16px;
+`
+
+export const InputGroup = styled.div`
+  flex: auto; // O grupo de input ocupa o espaço disponível
+
+  label {
+    color: ${cores.bege}; // Cor do texto do label
+    font-size: 14px; // Tamanho da fonte do label
+    font-style: normal; // Estilo da fonte do label
+    font-weight: 700; // Peso da fonte do label
+    display: block; // Exibe o label como bloco
+    margin: 8px 0;
+  }
+
+  input {
+    margin: 8px 0;
+    padding: 0 8px; // Espaçamento interno horizontal
+    background-color: ${cores.bege}; // Cor de fundo do input
+    height: 32px; // Altura do input
+    border: 1px solid ${cores.bege}; // Borda do input
+    width: 100%; // Largura total do input
+
+      &.error {
+      border: 1px solid red;
+    }
+  }
+  }
+`
+export const Row = styled.div`
+  display: flex;
+  column-gap: 34px;
+  align-items: flex-end;
+  margin-bottom: 8px;
+`
+
+export const Buttons = styled.div`
+  ${ButtonContainer} {
+    margin-top: 8px;
+    width: 100%;
+  }
+`
+
+export const ContainerConfirmation = styled.div`
+  color: ${cores.bege}; // Cor do texto
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 14px; // Tamanho da fonte
+    font-weight: 400; // Peso da fonte
+    line-height: 22px; // Altura da linha
+  }
+
+  ${ButtonContainer} {
+    margin-top: 24px; // Espaçamento inferior
+  }
 `

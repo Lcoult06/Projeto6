@@ -88,6 +88,13 @@ export const Row = styled.div`
   margin-bottom: 8px;
 `
 
+export const Buttons = styled.div`
+  ${ButtonContainer} {
+    margin-top: 8px;
+    width: 100%;
+  }
+`
+
 export const ContainerConfirmation = styled.div`
   p {
     color: ${cores.bege}; // Cor do texto

@@ -13,8 +13,7 @@ import {
   Sidebar,
   Title
 } from './styles'
-import { close, remove } from '../../store/reducers/cart'
-import { openDelivery } from '../../store/reducers/checkout'
+import { close, remove, clear } from '../../store/reducers/cart'
 import { RootReducer } from '../../store'
 
 import Button from '../Button'
@@ -23,21 +22,11 @@ import Button from '../Button'
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import { Form, Navigate } from 'react-router-dom'
+
 import InputMask from 'react-input-mask'
 
 import { usePurchaseMutation } from '../../services/api'
 import { ButtonContainer } from '../../components/Button/styles'
-
-import { open, clear } from '../../store/reducers/cart'
-import {
-  openPayment,
-  openConfirmation,
-  closeDelivery,
-  closePayment,
-  closeConfirmation
-} from '../../store/reducers/checkout'
-import { Card } from '../Restaurant/styles'
 
 const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart)
@@ -51,7 +40,10 @@ const Cart = () => {
   const continuarPagamento = () => setStep('payment')
   const VoltarEntrega = () => setStep('delivery')
 
-  const confirmationOpen = () => setStep('confirmation')
+  const goToHome = () => {
+    dispatch(close())
+    navigate('/')
+  }
 
   const dispatch = useDispatch()
 
@@ -79,20 +71,6 @@ const Cart = () => {
     dispatch(remove(id))
   }
 
-  const open = () => {
-    closeCart()
-    dispatch(openDelivery())
-  }
-
-  const redirect = () => {
-    if (items.length === 0) {
-      return closeCart()
-    }
-    return open()
-  }
-
-  //Checkout validacoes
-
   const [purchase, { data, isLoading, isSuccess }] = usePurchaseMutation()
 
   const form = useFormik({
@@ -111,21 +89,13 @@ const Cart = () => {
     },
     validationSchema: Yup.object({
       receiver: Yup.string()
-        .min(5, 'O nome do receptor precisa ter pelo menos 5 caracteres')
+        .min(5, 'O nome  precisa ter pelo menos 5 caracteres')
         .required('O campo é obrigatório'),
-      adress: Yup.string()
-        .min(5, 'O endereço precisa ter pelo menos 5 caracteres')
-        .required('O campo é obrigatório'),
-      city: Yup.string()
-        .min(3, 'A cidade precisa ter pelo menos 3 caracteres')
-        .required('O campo é obrigatório'),
-      zipCode: Yup.string()
-        .min(9, 'O CEP precisa ter 8 caracteres')
-        .max(9, 'O CEP precisa ter 8 caracteres')
-        .required('O campo é obrigatório'),
-      number: Yup.string()
-        .min(1, 'O número precisa ter pelo menos um caractere')
-        .required('O campo é obrigatório'),
+      adress: Yup.string().required('O campo é obrigatório'),
+      city: Yup.string().required('O campo é obrigatório'),
+      zipCode: Yup.string().required('O campo é obrigatório'),
+      number: Yup.string().required('O campo é obrigatório'),
+
       cardDisplayName: Yup.string()
         .min(5, 'O nome no cartão deve ter pelo menos 5 caracteres')
         .required('O campo é obrigatório'),
@@ -142,8 +112,8 @@ const Cart = () => {
         .max(2, 'O mês de vencimento deve ter 2 dígitos')
         .required('O campo é obrigatório'),
       expiresYear: Yup.string()
-        .min(4, 'O ano de vencimento deve ter 4 dígitos')
-        .max(4, 'O ano de vencimento deve ter 4 dígitos')
+        .min(2, 'O ano de vencimento deve ter 2 dígitos')
+        .max(2, 'O ano de vencimento deve ter 2 dígitos')
         .required('O campo é obrigatório')
     }),
     onSubmit: (values) => {
@@ -170,16 +140,16 @@ const Cart = () => {
             }
           }
         },
-        products: [
-          {
-            id: 1,
-            price: 10
-          }
-        ]
-        //   // products: items.map((item) => ({
-        //   //   id: item.id,
-        //   //   price: item.preco as number
-        //   // }))
+        // products: [
+        //   {
+        //     id: 1,
+        //     price: 10
+        //   }
+        // ]
+        products: items.map((item) => ({
+          id: item.id,
+          price: item.preco as number
+        }))
       })
     }
   })
@@ -193,25 +163,25 @@ const Cart = () => {
     if (isTouched && isInvalid) return message
     return ''
   }
-  // const checkInputHasError = (fieldName: string) => {
-  //   const isTouched = fieldName in form.touched
-  //   const isInvalid = fieldName in form.touched
-  //   const hasError = isTouched && isInvalid
+  const checkInputHasError = (fieldName: string) => {
+    const isTouched = fieldName in form.touched
+    const isInvalid = fieldName in form.errors
+    const hasError = isTouched && isInvalid
 
-  //   return hasError
-  // }
+    return hasError
+  }
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     dispatch(clear())
-  //   }
-  // }, [isSuccess, dispatch])
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clear())
+    }
+  }, [isSuccess, dispatch])
 
   return (
     <CartContainer className={isOpen ? 'is-open' : ''}>
       <Overlay onClick={closeCart} />
       <Sidebar>
-        {isSuccess ? (
+        {isSuccess && data ? (
           <ContainerConfirmation>
             <h3>Pedido realizado - {data.orderId} </h3>
             <p>
@@ -232,7 +202,11 @@ const Cart = () => {
               Esperamos que desfrute de uma deliciosa e agradável experiência
               gastronômica. Bom apetite! <br /> <br />
             </p>
-            <ButtonContainer type="button" title="Clique aqui para concluir">
+            <ButtonContainer
+              onClick={goToHome}
+              type="button"
+              title="Clique aqui para concluir"
+            >
               Concluir
             </ButtonContainer>
           </ContainerConfirmation>
@@ -272,7 +246,7 @@ const Cart = () => {
                 ) : (
                   <p className="empty-text">
                     O carrinho está vazio, adicione pelo menos um produto para
-                    continuar com a compra
+                    continuar com a compra.
                   </p>
                 )}
               </>
@@ -283,7 +257,7 @@ const Cart = () => {
                 <InputGroup>
                   <label htmlFor="receiver">Quem irá receber</label>
                   <input
-                    // className={checkInputHasError('receiver') ? 'error' : ''}
+                    className={checkInputHasError('receiver') ? 'error' : ''}
                     type="text"
                     id="receiver"
                     name="receiver"
@@ -298,7 +272,7 @@ const Cart = () => {
                 <InputGroup>
                   <label htmlFor="adress">Endereço</label>
                   <input
-                    // className={checkInputHasError('adress') ? 'error' : ''}
+                    className={checkInputHasError('adress') ? 'error' : ''}
                     type="text"
                     id="adress"
                     name="adress"
@@ -306,12 +280,12 @@ const Cart = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
-                  <small>{getErrorMessage('adress', form.errors.adress)}</small>
+                  {/* <small>{getErrorMessage('adress', form.errors.adress)}</small> */}
                 </InputGroup>
                 <InputGroup>
                   <label htmlFor="city">Cidade</label>
                   <input
-                    // className={checkInputHasError('city') ? 'error' : ''}
+                    className={checkInputHasError('city') ? 'error' : ''}
                     type="text"
                     id="city"
                     name="city"
@@ -319,13 +293,13 @@ const Cart = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
-                  <small>{getErrorMessage('city', form.errors.city)}</small>
+                  {/* <small>{getErrorMessage('city', form.errors.city)}</small> */}
                 </InputGroup>
                 <Row>
                   <InputGroup>
                     <label htmlFor="zipCode">CEP</label>
                     <InputMask
-                      // className={checkInputHasError('zipCode') ? 'error' : ''}
+                      className={checkInputHasError('zipCode') ? 'error' : ''}
                       type="text"
                       id="zipCode"
                       name="zipCode"
@@ -334,14 +308,14 @@ const Cart = () => {
                       onBlur={form.handleBlur}
                       mask="99.999-999"
                     />
-                    <small>
+                    {/* <small>
                       {getErrorMessage('zipCode', form.errors.zipCode)}
-                    </small>
+                    </small> */}
                   </InputGroup>
                   <InputGroup>
                     <label htmlFor="number">Número</label>
                     <input
-                      // className={checkInputHasError('number') ? 'error' : ''}
+                      className={checkInputHasError('number') ? 'error' : ''}
                       type="text"
                       id="number"
                       name="number"
@@ -349,15 +323,15 @@ const Cart = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
-                    <small>
+                    {/* <small>
                       {getErrorMessage('number', form.errors.number)}
-                    </small>
+                    </small> */}
                   </InputGroup>
                 </Row>
                 <InputGroup>
                   <label htmlFor="complement">Complemento (opcional)</label>
                   <input
-                    // className={checkInputHasError('complement') ? 'error' : ''}
+                    className={checkInputHasError('complement') ? 'error' : ''}
                     type="text"
                     id="complement"
                     name="complement"
@@ -365,13 +339,13 @@ const Cart = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
-                  <small>
+                  {/* <small>
                     {getErrorMessage('complement', form.errors.complement)}
-                  </small>
+                  </small> */}
                 </InputGroup>
                 <Buttons>
                   <ButtonContainer
-                    type="submit"
+                    type="button"
                     onClick={continuarPagamento}
                     title="Clique aqui para continuar o pagamento"
                   >
@@ -396,7 +370,9 @@ const Cart = () => {
                 <InputGroup>
                   <label htmlFor="cardDisplayName">Nome no cartão</label>
                   <input
-                    // className={checkInputHasError('cardDisplayName') ? 'error' : ''}
+                    className={
+                      checkInputHasError('cardDisplayName') ? 'error' : ''
+                    }
                     type="text"
                     id="cardDisplayName"
                     name="cardDisplayName"
@@ -409,7 +385,9 @@ const Cart = () => {
                   <InputGroup>
                     <label htmlFor="cardNumber">Número do cartão</label>
                     <InputMask
-                      // className={checkInputHasError('cardNumber') ? 'error' : ''}
+                      className={
+                        checkInputHasError('cardNumber') ? 'error' : ''
+                      }
                       type="text"
                       id="cardNumber"
                       name="cardNumber"
@@ -422,7 +400,7 @@ const Cart = () => {
                   <InputGroup>
                     <label htmlFor="cardCode">CVV</label>
                     <InputMask
-                      // className={checkInputHasError('cardCode') ? 'error' : ''}
+                      className={checkInputHasError('cardCode') ? 'error' : ''}
                       type="text"
                       id="cardCode"
                       name="cardCode"
@@ -437,7 +415,9 @@ const Cart = () => {
                   <InputGroup>
                     <label htmlFor="expiresMonth">Mês de vencimento</label>
                     <InputMask
-                      // className={checkInputHasError('expiresMonth') ? 'error' : ''}
+                      className={
+                        checkInputHasError('expiresMonth') ? 'error' : ''
+                      }
                       type="text"
                       id="expiresMonth"
                       name="expiresMonth"
@@ -450,7 +430,9 @@ const Cart = () => {
                   <InputGroup>
                     <label htmlFor="expiresYear">Ano de vencimento</label>
                     <InputMask
-                      // className={checkInputHasError('expiresYear') ? 'error' : ''}
+                      className={
+                        checkInputHasError('expiresYear') ? 'error' : ''
+                      }
                       type="text"
                       id="expiresYear"
                       name="expiresYear"

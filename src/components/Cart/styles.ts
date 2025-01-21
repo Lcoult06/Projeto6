@@ -142,7 +142,7 @@ export const InputGroup = styled.div`
     width: 100%; // Largura total do input
 
       &.error {
-      border: 1px solid red;
+      border: 2px solid red;
     }
   }
   }

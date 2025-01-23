@@ -24,18 +24,14 @@ export type Restaurante = {
 }
 
 const Home = () => {
-  const { data: restaurantes } = useGetFeaturedRestauranteQuery()
+  const { data: restaurantes, isLoading } = useGetFeaturedRestauranteQuery()
 
-  if (restaurantes) {
-    return (
-      <>
-        <HeaderHome />
-        <RestaurantsList restaurantes={restaurantes} />
-      </>
-    )
-  }
-
-  return <h3>Carregando...</h3>
+  return (
+    <>
+      <HeaderHome />
+      <RestaurantsList isLoading={isLoading} restaurantes={restaurantes} />
+    </>
+  )
 }
 
 // const [restaurantes, setRestaurante] = useState<Restaurante[]>([])

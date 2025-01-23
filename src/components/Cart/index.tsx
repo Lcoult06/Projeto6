@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 import {
   Buttons,
@@ -13,12 +13,11 @@ import {
   Sidebar,
   Title
 } from './styles'
-import { close, remove, clear } from '../../store/reducers/cart'
+import { open, close, remove, clear } from '../../store/reducers/cart'
 import { RootReducer } from '../../store'
 
 import Button from '../Button'
 
-//Checkout
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
@@ -30,7 +29,6 @@ import { ButtonContainer } from '../../components/Button/styles'
 
 const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart)
-  const navigate = useNavigate()
 
   const [step, setStep] = useState('cart')
 
@@ -39,11 +37,6 @@ const Cart = () => {
 
   const continuarPagamento = () => setStep('payment')
   const VoltarEntrega = () => setStep('delivery')
-
-  const goToHome = () => {
-    dispatch(close())
-    navigate('/')
-  }
 
   const dispatch = useDispatch()
 
@@ -203,7 +196,7 @@ const Cart = () => {
               gastronômica. Bom apetite! <br /> <br />
             </p>
             <ButtonContainer
-              onClick={goToHome}
+              // onClick={closeCheckout}
               type="button"
               title="Clique aqui para concluir"
             >
@@ -252,7 +245,7 @@ const Cart = () => {
               </>
             )}
             {step === 'delivery' && (
-              <div>
+              <>
                 <Title>Entrega</Title>
                 <InputGroup>
                   <label htmlFor="receiver">Quem irá receber</label>
@@ -264,6 +257,8 @@ const Cart = () => {
                     value={form.values.receiver}
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
+                    required
+                    title="Por favor, informe o nome de quem irá receber"
                   />
                   <small>
                     {getErrorMessage('receiver', form.errors.receiver)}
@@ -280,7 +275,7 @@ const Cart = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
-                  {/* <small>{getErrorMessage('adress', form.errors.adress)}</small> */}
+                  <small>{getErrorMessage('adress', form.errors.adress)}</small>
                 </InputGroup>
                 <InputGroup>
                   <label htmlFor="city">Cidade</label>
@@ -293,7 +288,7 @@ const Cart = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
-                  {/* <small>{getErrorMessage('city', form.errors.city)}</small> */}
+                  <small>{getErrorMessage('city', form.errors.city)}</small>
                 </InputGroup>
                 <Row>
                   <InputGroup>
@@ -308,9 +303,9 @@ const Cart = () => {
                       onBlur={form.handleBlur}
                       mask="99.999-999"
                     />
-                    {/* <small>
+                    <small>
                       {getErrorMessage('zipCode', form.errors.zipCode)}
-                    </small> */}
+                    </small>
                   </InputGroup>
                   <InputGroup>
                     <label htmlFor="number">Número</label>
@@ -323,9 +318,9 @@ const Cart = () => {
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
-                    {/* <small>
+                    <small>
                       {getErrorMessage('number', form.errors.number)}
-                    </small> */}
+                    </small>
                   </InputGroup>
                 </Row>
                 <InputGroup>
@@ -339,9 +334,9 @@ const Cart = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
-                  {/* <small>
+                  <small>
                     {getErrorMessage('complement', form.errors.complement)}
-                  </small> */}
+                  </small>
                 </InputGroup>
                 <Buttons>
                   <ButtonContainer
@@ -359,11 +354,11 @@ const Cart = () => {
                     Voltar para o carrinho
                   </ButtonContainer>
                 </Buttons>
-              </div>
+              </>
             )}
 
             {step === 'payment' && (
-              <>
+              <div>
                 <Title>
                   Pagamento - Valor a pagar {formataPreco(getTotalPrice())}
                 </Title>
@@ -380,6 +375,12 @@ const Cart = () => {
                     onChange={form.handleChange}
                     onBlur={form.handleBlur}
                   />
+                  <small>
+                    {getErrorMessage(
+                      'cardDisplayName',
+                      form.errors.cardDisplayName
+                    )}
+                  </small>
                 </InputGroup>
                 <Row>
                   <InputGroup>
@@ -396,6 +397,9 @@ const Cart = () => {
                       onBlur={form.handleBlur}
                       mask="9999 9999 9999 9999"
                     />
+                    <small>
+                      {getErrorMessage('cardNumber', form.errors.cardNumber)}
+                    </small>
                   </InputGroup>
                   <InputGroup>
                     <label htmlFor="cardCode">CVV</label>
@@ -409,6 +413,9 @@ const Cart = () => {
                       onBlur={form.handleBlur}
                       mask="999"
                     />
+                    <small>
+                      {getErrorMessage('cardCode', form.errors.cardCode)}
+                    </small>
                   </InputGroup>
                 </Row>
                 <Row>
@@ -426,6 +433,12 @@ const Cart = () => {
                       onBlur={form.handleBlur}
                       mask="99"
                     />
+                    <small>
+                      {getErrorMessage(
+                        'expiresMonth',
+                        form.errors.expiresMonth
+                      )}
+                    </small>
                   </InputGroup>
                   <InputGroup>
                     <label htmlFor="expiresYear">Ano de vencimento</label>
@@ -441,6 +454,9 @@ const Cart = () => {
                       onBlur={form.handleBlur}
                       mask="99"
                     />
+                    <small>
+                      {getErrorMessage('expiresYear', form.errors.expiresYear)}
+                    </small>
                   </InputGroup>
                 </Row>
                 <Buttons>
@@ -458,7 +474,7 @@ const Cart = () => {
                     Voltar para a edição de endereço
                   </ButtonContainer>
                 </Buttons>
-              </>
+              </div>
             )}
           </form>
         )}

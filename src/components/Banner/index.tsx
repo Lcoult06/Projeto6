@@ -1,7 +1,5 @@
 import { Image, Title, Title2 } from './styles'
 
-import { Restaurante } from '../../pages/Home'
-
 type Props = {
   restaurante?: Restaurante
 }

@@ -13,7 +13,7 @@ import {
   Sidebar,
   Title
 } from './styles'
-import { open, close, remove, clear } from '../../store/reducers/cart'
+import { close, remove, clear } from '../../store/reducers/cart'
 import { RootReducer } from '../../store'
 
 import Button from '../Button'
@@ -195,11 +195,7 @@ const Cart = () => {
               Esperamos que desfrute de uma deliciosa e agradável experiência
               gastronômica. Bom apetite! <br /> <br />
             </p>
-            <ButtonContainer
-              // onClick={closeCheckout}
-              type="button"
-              title="Clique aqui para concluir"
-            >
+            <ButtonContainer type="button" title="Clique aqui para concluir">
               Concluir
             </ButtonContainer>
           </ContainerConfirmation>

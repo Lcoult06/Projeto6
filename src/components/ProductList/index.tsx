@@ -1,4 +1,3 @@
-import { CardapioItem } from '../../pages/Home'
 import Loader from '../Loader'
 import Product from '../Product'
 import { ProductListStyle } from './styles'

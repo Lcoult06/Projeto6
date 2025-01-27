@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
 
 import {
   Buttons,
@@ -26,9 +25,11 @@ import InputMask from 'react-input-mask'
 
 import { usePurchaseMutation } from '../../services/api'
 import { ButtonContainer } from '../../components/Button/styles'
+import { useNavigate } from 'react-router-dom'
 
 const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart)
+  const navigate = useNavigate()
 
   const [step, setStep] = useState('cart')
 
@@ -42,6 +43,12 @@ const Cart = () => {
 
   const closeCart = () => {
     dispatch(close())
+  }
+
+  const checkoutForm = () => {
+    dispatch(close())
+    navigate('/')
+    window.location.reload()
   }
 
   const formataPreco = (preco = 0) => {
@@ -195,9 +202,13 @@ const Cart = () => {
               Esperamos que desfrute de uma deliciosa e agradável experiência
               gastronômica. Bom apetite! <br /> <br />
             </p>
-            <ButtonContainer type="button" title="Clique aqui para concluir">
+            <Button
+              onClick={checkoutForm}
+              type="button"
+              title="Clique aqui para continuar com a entrega"
+            >
               Concluir
-            </ButtonContainer>
+            </Button>
           </ContainerConfirmation>
         ) : (
           <form onSubmit={form.handleSubmit}>

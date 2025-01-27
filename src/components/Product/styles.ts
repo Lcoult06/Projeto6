@@ -82,13 +82,15 @@ export const ModalContainer = styled.div`
 export const ModalContent = styled.div`
   background-color: ${cores.vermelho};
   max-width: 1024px;
-C
   height: 344px;
   position: relative;
   z-index: 1;
   display: flex;
   align-items: flex-start;
   padding: 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
   header {
     img {
       position: absolute;
@@ -110,10 +112,9 @@ C
     flex-direction: column;
 
     > img {
-    margin: 0;
-    margin-bottom: 8px;
-  }
-
+      margin: 0;
+      margin-bottom: 8px;
+    }
   }
 `
 export const Description = styled.div`

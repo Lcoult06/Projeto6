@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { breakpoints, cores } from '../../styles'
+import { cores } from '../../styles'
 
 export const Container = styled.footer`
   display: flex;
